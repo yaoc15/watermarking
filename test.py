@@ -29,7 +29,7 @@ def extract_peek_ranges_from_array(array_vals, minimun_val=10, minimun_range=2):
     return peek_ranges
 
 base_dir = "tmp"
-path_test_image = os.path.join(base_dir, "test1.png")
+path_test_image = os.path.join(base_dir, "test.png")
 image_color = cv2.imread(path_test_image)
 #new_shape = (image_color.shape[1] * 2, image_color.shape[0] * 2)
 #image_color = cv2.resize(image_color, new_shape)
@@ -110,7 +110,7 @@ def median_split_ranges(peek_ranges):
                 start_point = peek_range[0] + int(i * char_w)
                 end_point = peek_range[0] + int((i + 1) * char_w)
                 new_peek_ranges.append((start_point, end_point))
-        elif i >0 and int(round((widthes[i-1]+widthes[i])/median_w)) == 1 and peek_ranges[i][0] - peek_ranges[i-1][1]<=1:
+        elif i >0 and int(round((widthes[i-1]+widthes[i])/median_w)) == 1 and peek_ranges[i][0] - peek_ranges[i-1][1]<=4:
             print(i)
             new_peek_ranges.pop()
             start_point = peek_ranges[i-1][0]
@@ -157,10 +157,10 @@ for i, peek_range in enumerate(peek_ranges):
         h = peek_range[1] - y
         pt1 = (x, y)
         pt2 = (x + w, y + h)
-        if w > 0.5 * median:
-            cv2.rectangle(image_color, pt1, pt2, color)
-            tmp_image = image_color[y+1:y+h,x+1:x+w]
-            cv2.imwrite("result/" + str(num_value) + ".png",tmp_image)
-            num_value += 1
+        # if w > 0.5 * median:
+        cv2.rectangle(image_color, pt1, pt2, color)
+        tmp_image = image_color[y+1:y+h,x+1:x+w]
+        cv2.imwrite("result/" + str(num_value) + ".png",tmp_image)
+        num_value += 1
 cv2.imshow('splited char image', image_color)
 cv2.waitKey(0)
